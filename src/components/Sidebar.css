@@ -1,0 +1,125 @@
+.sidebar {
+  flex: 1 1 0;
+  max-width: 16.666vw;
+  min-width: 100px;
+  background: #222;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  position: relative;
+}
+
+.sidebar-logo {
+  font-family: 'Roboto', Arial, sans-serif;
+  font-weight: 600;
+  font-size: 36px;
+  color: #fff;
+  letter-spacing: 1px;
+  margin: 24px 0 16px 24px;
+  align-self: flex-start;
+  user-select: none;
+}
+
+.sidebar-search {
+  display: flex;
+  align-items: center;
+  width: 90%;
+  margin: 24px auto 32px auto;
+  background: #292929;
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+
+.sidebar-search-icon {
+  color: #aaa;
+  font-size: 18px;
+  margin-right: 8px;
+}
+
+.sidebar-search-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 15px;
+  width: 100%;
+  font-family: 'Roboto', Arial, sans-serif;
+  font-weight: 400;
+}
+
+.sidebar-divider {
+  width: 80%;
+  height: 1px;
+  background: #333;
+  margin: 0 auto 20px auto;
+  border: none;
+}
+
+.sidebar-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  gap: 16px;
+  margin-top: 0;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 24px;
+  font-weight: 600;
+  padding: 10px 24px;
+  border-radius: 8px;
+  width: 100%;
+  text-align: left;
+  transition: background 0.2s, color 0.2s, transform 0.15s;
+  cursor: pointer;
+  position: relative;
+}
+
+.sidebar-link:hover,
+.sidebar-link:focus {
+  background: #333;
+  color: #ff5c5c;
+  transform: translateX(4px);
+}
+
+.sidebar-link.active {
+  background: #444;
+  color: #ff5c5c;
+}
+
+.sidebar-icon {
+  font-size: 22px;
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+  width: 100%;
+  padding-bottom: 24px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.sidebar-link-bottom {
+  font-size: 20px;
+  font-weight: 400;
+  color: #bbb;
+  padding: 10px 24px;
+}
+
+.sidebar-link-bottom:hover,
+.sidebar-link-bottom:focus {
+  background: #333;
+  color: #fff;
+}
+
+.sidebar-link-text {
+  display: inline;
+}

@@ -1,0 +1,117 @@
+.video-feed {
+  flex: 5 1 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #111;
+  min-height: 100vh;
+}
+
+.video-placeholder {
+  position: relative;
+  height: 90vh;
+  width: calc(90vh * 9 / 16);
+  max-width: 95vw;
+  background: #222;
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-size: 32px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+  transition: box-shadow 0.2s;
+}
+
+.video-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.video-info {
+  position: absolute;
+  left: 32px;
+  bottom: 32px;
+  color: #fff;
+  text-align: left;
+  max-width: 60%;
+  z-index: 2;
+}
+
+.video-title {
+  font-size: 22px;
+  font-weight: 600;
+  font-family: 'Roboto', Arial, sans-serif;
+  margin-bottom: 8px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+.video-description {
+  font-size: 16px;
+  font-weight: 400;
+  font-family: 'Roboto', Arial, sans-serif;
+  opacity: 0.85;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  line-height: 1.4;
+}
+
+.video-actions {
+  position: absolute;
+  bottom: 32px;
+  right: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.video-action-btn {
+  background: rgba(40,40,40,0.85);
+  border: none;
+  border-radius: 50%;
+  padding: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.video-action-btn:hover {
+  background: #ff5c5c;
+  transform: scale(1.08);
+}
+
+.video-action-icon {
+  color: #fff;
+  font-size: 32px;
+}
+
+.video-action-count {
+  color: #fff;
+  font-size: 16px;
+  font-family: 'Roboto', Arial, sans-serif;
+  font-weight: 500;
+  margin-bottom: 4px;
+  text-align: center;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+.video-tags {
+  margin-top: 8px;
+  font-size: 15px;
+  font-weight: 400;
+  color: #ff5c5c;
+  font-family: 'Roboto', Arial, sans-serif;
+  opacity: 0.95;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  word-break: break-word;
+}
+
+.video-action-icon.liked {
+  color: #ff5c5c;
+  transition: color 0.2s;
+}
