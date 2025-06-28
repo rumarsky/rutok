@@ -75,3 +75,19 @@
   font-weight: 600;
   box-shadow: 0 2px 16px rgba(0,0,0,0.15);
 }
+
+.profile-upload-btn {
+  background: #ff5c5c;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 28px;
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.profile-upload-btn:hover {
+  background: #ff2c2c;
+}

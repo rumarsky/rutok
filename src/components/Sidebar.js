@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { MdHome, MdExplore, MdPerson, MdSearch, MdSettings } from 'react-icons/md';
+import { MdHome, MdExplore, MdPerson, MdSettings, MdLogin } from 'react-icons/md';
 import './Sidebar.css';
 
 function Sidebar() {
@@ -8,14 +8,6 @@ function Sidebar() {
     <nav className="sidebar">
       <div className="sidebar-logo">
         RuTok
-      </div>
-      <div className="sidebar-search">
-        <MdSearch className="sidebar-search-icon" />
-        <input
-          type="text"
-          className="sidebar-search-input"
-          placeholder="Поиск"
-        />
       </div>
       <hr className="sidebar-divider" />
       <div className="sidebar-links">
@@ -43,6 +35,14 @@ function Sidebar() {
         >
           <MdPerson className="sidebar-icon" />
           Профиль
+        </NavLink>
+        <NavLink
+          to="/login"
+          className={({ isActive }) => 'sidebar-link' + (isActive ? ' active' : '')}
+          title="Вход"
+        >
+          <MdLogin className="sidebar-icon" />
+          Вход
         </NavLink>
       </div>
       <div className="sidebar-bottom">

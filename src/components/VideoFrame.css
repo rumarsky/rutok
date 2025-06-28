@@ -60,3 +60,25 @@
   color: #ff5c5c;
   opacity: 0.9;
 }
+
+.video-frame-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.video-frame-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ff5c5c;
+}
+
+.video-frame-username {
+  font-size: 15px;
+  font-weight: 500;
+  color: #fff;
+  opacity: 0.85;
+}
