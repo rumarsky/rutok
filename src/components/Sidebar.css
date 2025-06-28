@@ -15,11 +15,15 @@
   font-family: 'Roboto', Arial, sans-serif;
   font-weight: 600;
   font-size: 36px;
-  color: #fff;
   letter-spacing: 1px;
   margin: 24px 0 16px 24px;
   align-self: flex-start;
   user-select: none;
+  background: linear-gradient(90deg, #fff 0%, #007aff 50%, #ff2c2c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: background 0.4s;
 }
 
 .sidebar-search {
@@ -76,7 +80,7 @@
   font-weight: 600;
   padding: 10px 24px;
   border-radius: 8px;
-  width: 100%;
+  width: 83%;
   text-align: left;
   transition: background 0.2s, color 0.2s, transform 0.15s;
   cursor: pointer;

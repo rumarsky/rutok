@@ -1,0 +1,62 @@
+.settings-content {
+  flex: 5 1 0;
+  padding: 40px;
+  color: #fff;
+  font-family: 'Roboto', Arial, sans-serif;
+  overflow-y: auto;
+}
+
+.settings-title {
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 32px;
+}
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  max-width: 400px;
+}
+
+.settings-form label {
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+  gap: 6px;
+}
+
+.settings-form input[type="text"],
+.settings-form input[type="email"],
+.settings-form select {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  font-size: 15px;
+  background: #292929;
+  color: #fff;
+  margin-top: 4px;
+}
+
+.settings-checkbox {
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+}
+
+.settings-save-btn {
+  background: #ff5c5c;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 0;
+  font-size: 17px;
+  font-weight: 600;
+  margin-top: 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.settings-save-btn:hover {
+  background: #ff2c2c;
+}

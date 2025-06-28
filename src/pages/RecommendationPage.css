@@ -1,5 +1,22 @@
-.recommendation-page {
+.main-page {
   display: flex;
   height: 100vh;
   background: #181818;
+}
+
+.main-content {
+  flex: 5 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #fff;
+  font-family: 'Roboto', Arial, sans-serif;
+  padding: 40px;
+  overflow-y: auto;
+}
+
+.recommend-title {
+  font-size: 40px;
+  font-weight: 600;
+  margin-bottom: 24px;
 }
