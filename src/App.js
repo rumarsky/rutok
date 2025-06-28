@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MainPage from './pages/MainPage';
 import RecommendationPage from './pages/RecommendationPage';
+import ProfilePage from './pages/ProfilePage';
 
 function App() {
   return (
@@ -9,7 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/recommendations" element={<RecommendationPage />} />
-        {/* Можно добавить другие страницы */}
+        <Route path="/profile" element={<ProfilePage />} />
       </Routes>
     </Router>
   );
