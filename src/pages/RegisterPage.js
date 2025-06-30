@@ -11,7 +11,7 @@ function RegisterPage({ onRegister, switchToLogin }) {
   const handleSubmit = e => {
     e.preventDefault();
     // Здесь логика регистрации
-    onRegister?.(email, username, password);
+    //onRegister?.(email, username, password);
   };
 
   return (
