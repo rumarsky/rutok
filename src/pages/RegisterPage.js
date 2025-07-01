@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../components/AuthContext'; // Импортируй useAuth
 import './AuthPage.css';
 
 async function registerUser({ username, email, password }) {
@@ -21,6 +22,7 @@ function RegisterPage() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const { login } = useAuth(); // Получи login из контекста
   const navigate = useNavigate();
 
   const handleSubmit = async e => {
@@ -29,8 +31,7 @@ function RegisterPage() {
     setError('');
     try {
       const data = await registerUser({ username, email, password });
-      localStorage.setItem('accessToken', data.accessToken);
-      localStorage.setItem('refreshToken', data.refreshToken);
+      login(data.accessToken, data.refreshToken); // Используй login из контекста
       navigate('/');
     } catch (err) {
       setError(err.message || 'Ошибка регистрации');

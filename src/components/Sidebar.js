@@ -1,9 +1,12 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { MdHome, MdExplore, MdPerson, MdSettings, MdLogin } from 'react-icons/md';
+import { useAuth } from './AuthContext'; // Импортируй useAuth
 import './Sidebar.css';
 
 function Sidebar() {
+  const { isAuthenticated } = useAuth(); // Получи статус авторизации
+
   return (
     <nav className="sidebar">
       <div className="sidebar-logo">
@@ -28,22 +31,25 @@ function Sidebar() {
           <MdExplore className="sidebar-icon" />
           Рекомендации
         </NavLink>
-        <NavLink
-          to="/profile"
-          className={({ isActive }) => 'sidebar-link' + (isActive ? ' active' : '')}
-          title="Профиль"
-        >
-          <MdPerson className="sidebar-icon" />
-          Профиль
-        </NavLink>
-        <NavLink
-          to="/login"
-          className={({ isActive }) => 'sidebar-link' + (isActive ? ' active' : '')}
-          title="Вход"
-        >
-          <MdLogin className="sidebar-icon" />
-          Вход
-        </NavLink>
+        {isAuthenticated ? (
+          <NavLink
+            to="/profile"
+            className={({ isActive }) => 'sidebar-link' + (isActive ? ' active' : '')}
+            title="Профиль"
+          >
+            <MdPerson className="sidebar-icon" />
+            Профиль
+          </NavLink>
+        ) : (
+          <NavLink
+            to="/login"
+            className={({ isActive }) => 'sidebar-link' + (isActive ? ' active' : '')}
+            title="Вход"
+          >
+            <MdLogin className="sidebar-icon" />
+            Вход
+          </NavLink>
+        )}
       </div>
       <div className="sidebar-bottom">
         <NavLink

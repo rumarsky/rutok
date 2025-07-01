@@ -3,12 +3,16 @@ import Sidebar from '../components/Sidebar';
 import UploadModal from '../components/UploadModal';
 import VideoFrame from '../components/VideoFrame';
 import VideoFeed from '../components/VideoFeed';
+import { useAuth } from '../components/AuthContext'; // Импортируй useAuth
+import { useNavigate } from 'react-router-dom'; // Импортируй useNavigate
 import './ProfilePage.css';
 
 function ProfilePage() {
   const [showUpload, setShowUpload] = useState(false);
   const [openFeed, setOpenFeed] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { logout } = useAuth(); // Получи функцию logout
+  const navigate = useNavigate(); // Для редиректа после выхода
 
   // Примерные данные пользователя
   const user = {
@@ -57,6 +61,11 @@ function ProfilePage() {
     setOpenFeed(true);
   };
 
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
+
   return (
     <div className="main-page">
       <Sidebar />
@@ -73,6 +82,9 @@ function ProfilePage() {
               <div><b>{user.stats.following}</b> подписки</div>
               <div><b>{user.stats.likes}</b> лайков</div>
             </div>
+            <button className="profile-logout-btn" onClick={handleLogout}>
+              Выйти
+            </button>
           </div>
         </div>
         <button
