@@ -91,3 +91,23 @@
 .profile-upload-btn:hover {
   background: #ff2c2c;
 }
+
+.profile-logout-btn {
+  margin-top: 16px;
+  padding: 8px 20px;
+  background: #ff4d4f;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  box-shadow: 0 2px 8px rgba(255,77,79,0.08);
+}
+
+.profile-logout-btn:hover,
+.profile-logout-btn:focus {
+  background: #d9363e;
+  outline: none;
+}

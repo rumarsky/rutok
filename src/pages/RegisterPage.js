@@ -1,19 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AuthPage.css';
-
-async function registerUser({ username, email, password }) {
-  const response = await fetch('http://81.163.28.17:10001/api/registration', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, email, password }),
-  });
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error || 'Ошибка регистрации');
-  }
-  return await response.json();
-}
+import authService from '../services/authService';
 
 function RegisterPage() {
   const [email, setEmail] = useState('');
@@ -28,9 +16,7 @@ function RegisterPage() {
     setLoading(true);
     setError('');
     try {
-      const data = await registerUser({ username, email, password });
-      localStorage.setItem('accessToken', data.accessToken);
-      localStorage.setItem('refreshToken', data.refreshToken);
+      await authService.register(username, email, password);
       navigate('/');
     } catch (err) {
       setError(err.message || 'Ошибка регистрации');
