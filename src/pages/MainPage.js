@@ -27,7 +27,7 @@ const videos = [
     tags: '#спорт #скейт #экстрим',
     likes: 98,
     comments: 7,
-    idVideo: 2, //добавил id видоса
+    idVideo: 15, //добавил id видоса
     commentsList: [
       { author: 'skatefan', text: 'Круто!' },
       { author: 'pro_skater', text: 'Давай ещё!' },
