@@ -2,78 +2,61 @@ import React, { useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import VideoFrame from '../components/VideoFrame';
 import VideoFeed from '../components/VideoFeed';
+import storageService from '../services/storageService';
+import videoService from '../services/videoService';
+import userService from '../services/userService';
 import './MainPage.css';
 
+  
 
-//Данный массив формироваться будет по запросу к сервису Романа (все видео)
-const videos = [
-  {
-    user: { avatar: 'https://i.pravatar.cc/40?img=5', username: 'rutok_user' },
-    title: 'Весёлый котик',
-    description: 'Котик играет с клубком. Смешно и мило!',
-    tags: '#кот #милота #тренды',
-    likes: 123,
-    comments: 10,
-    idVideo: 1, 
-    commentsList: [
-      { author: 'cat_lover', text: 'Какой милый!' },
-      { author: 'user123', text: 'Хочу такого же кота!' },
-    ],
-  },
-  {
-    user: { avatar: 'https://i.pravatar.cc/40?img=6', username: 'skater_boy' },
-    title: 'Трюки на скейте',
-    description: 'Лучшие трюки этого лета!',
-    tags: '#спорт #скейт #экстрим',
-    likes: 98,
-    comments: 7,
-    idVideo: 15, //добавил id видоса
-    commentsList: [
-      { author: 'skatefan', text: 'Круто!' },
-      { author: 'pro_skater', text: 'Давай ещё!' },
-    ],
-  },
-  {
-    user: { avatar: 'https://i.pravatar.cc/40?img=6', username: 'skater_boy' },
-    title: 'Трюки на скейте',
-    description: 'Лучшие трюки этого лета!',
-    tags: '#спорт #скейт #экстрим',
-    likes: 98,
-    comments: 7,
-    idVideo: 1, //добавил id видоса
-    commentsList: [
-      { author: 'skatefan', text: 'Круто!' },
-      { author: 'pro_skater', text: 'Давай ещё!' },
-    ],
-  },
-  {
-    user: { avatar: 'https://i.pravatar.cc/40?img=6', username: 'skater_boy' },
-    title: 'Трюки на скейте',
-    description: 'Лучшие трюки этого лета!',
-    tags: '#спорт #скейт #экстрим',
-    likes: 98,
-    comments: 7,
-    idVideo: 6, //добавил id видоса
-    commentsList: [
-      { author: 'skatefan', text: 'Круто!' },
-      { author: 'pro_skater', text: 'Давай ещё!' },
-    ],
-  },
-  {
-    user: { avatar: 'https://i.pravatar.cc/40?img=6', username: 'skater_boy' },
-    title: 'Трюки на скейте',
-    description: 'Лучшие трюки этого лета!',
-    tags: '#спорт #скейт #экстрим',
-    likes: 98,
-    comments: 7,
-    idVideo: 4, //добавил id видоса
-    commentsList: [
-      { author: 'skatefan', text: 'Круто!' },
-      { author: 'pro_skater', text: 'Давай ещё!' },
-    ],
-  },
-  // ...и так далее для всех видео
-];
+
+//Пока от себя загружаю
+
+
+const  romanAllVideos = await videoService.getAllUserVideos();
+console.log(romanAllVideos);
+
+async function generateVideos(apiVideos, userService) {
+  return await Promise.all(apiVideos.map(async video => {
+    //username
+    let username = 'Unknown User';
+    try {
+      const user = await userService.getUserById(video.userId);
+      if (user && typeof user.username === 'string') {
+        username = user.username;
+      } else {
+        console.warn(`No valid username for userId: ${video.userId}`);
+      }
+    } catch (error) {
+      console.error(`Error fetching user for userId ${video.userId}:`, error);
+    }
+
+     //tags
+    const tagsString = Array.isArray(video.tags)
+    ? video.tags.map(tag => `#${tag.ruTag}`).join(' ')
+    : '';
+
+    return {
+      user: {
+        avatar: 'https://i.pravatar.cc/40?img=5',
+        username
+      },
+      title: video.name || 'Untitled Video',
+      description: video.description || '',
+      tags: tagsString,
+      likes: video.likes || 0,
+      comments: video.commentsCount || 0,
+      idVideo: video.idVideo || 0,
+      commentsList: [
+        { author: 'cat_lover', text: 'Какой милый!' },
+        { author: 'user123', text: 'Хочу такого же кота!' }
+      ]
+    };
+  }));
+}
+
+const currVideos = await generateVideos(romanAllVideos,userService);
+console.log(currVideos ,"All videos");
 
 function MainPage() {
   const [search, setSearch] = useState('');
@@ -85,7 +68,8 @@ function MainPage() {
     setOpenFeed(true);
   };
 
-  const filteredVideos = videos.filter(video =>
+  //видосы сортируем от Ромы
+  const filteredVideosAllsE = currVideos.filter(video =>
     video.title.toLowerCase().includes(search.toLowerCase()) ||
     video.description.toLowerCase().includes(search.toLowerCase()) ||
     video.tags.toLowerCase().includes(search.toLowerCase()) ||
@@ -104,7 +88,7 @@ function MainPage() {
           className="search-input"
         />
         <div className="video-frame-list">
-          {filteredVideos.map((video, idx) => (
+          {filteredVideosAllsE.map((video, idx) => (
             <VideoFrame
               key={idx}
               title={video.title}
@@ -121,7 +105,7 @@ function MainPage() {
           <div className="video-feed-modal-backdrop" onClick={() => setOpenFeed(false)}>
             <div className="video-feed-modal" onClick={e => e.stopPropagation()}>
               <VideoFeed
-                videos={videos}
+                videos={currVideos}
                 initialIndex={currentIndex}
                 onClose={() => setOpenFeed(false)}
               />

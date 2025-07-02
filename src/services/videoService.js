@@ -1,0 +1,51 @@
+import authService from './authService';
+
+const API_URL = "http://81.163.28.17:10004/api";
+
+async function authFetch(url, options = {}) {
+    const token = authService.getAccessToken();
+    
+    const headers = {
+      ...options.headers,
+      'Authorization': `Bearer ${token}`
+    };
+  
+    const response = await fetch(url, {
+      ...options,
+      headers
+    });
+  
+    if (!response.ok) {
+      const error = new Error(response.statusText);
+      error.response = response;
+      throw error;
+    }
+  
+    return await response.json();
+}
+
+//для неавторизованных запросов
+async function publicFetch(url, options = {}) {
+    const response = await fetch(url, options);
+  
+    if (!response.ok) {
+      const error = new Error(response.statusText);
+      error.response = response;
+      throw error;
+    }
+  
+    return await response.json();
+}
+
+async function getUserVideosID(userId) {
+    return await authFetch(`${API_URL}/videos/user/${userId}`);
+}
+
+async function getAllUserVideos(){
+    return await publicFetch(`${API_URL}/videos`);
+}
+
+export default{
+    getUserVideosID,
+    getAllUserVideos,
+}

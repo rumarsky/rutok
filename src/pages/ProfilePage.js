@@ -1,21 +1,27 @@
-import React, { useState, useEffect } from "react";
-import Sidebar from "../components/Sidebar";
-import UploadModal from "../components/UploadModal";
-import VideoFrame from "../components/VideoFrame";
-import VideoFeed from "../components/VideoFeed";
-import Notification from "../components/Notification";
-import "./ProfilePage.css";
-import authService from "../services/authService";
-import userService from "../services/userService";
-import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
+
+import React, { useState, useEffect } from 'react';
+import Sidebar from '../components/Sidebar';
+import UploadModal from '../components/UploadModal';
+import VideoFrame from '../components/VideoFrame';
+import VideoFeed from '../components/VideoFeed';
+import './ProfilePage.css';
+import authService from '../services/authService';
+import userService from '../services/userService';
+import videoService from '../services/videoService';
+
+import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+
 
 function ProfilePage() {
   const [showUpload, setShowUpload] = useState(false);
   const [openFeed, setOpenFeed] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [user, setUser] = useState(null);
-  const [error, setError] = useState("");
+
+  const [error, setError] = useState('');
+  const [userVid, setUserVideos] = useState([]);
+
   const navigate = useNavigate();
 
   const [notification, setNotification] = useState(null);
@@ -33,12 +39,20 @@ function ProfilePage() {
         }
         const userData = await userService.getUserById(userId);
         setUser(userData);
+        
+        const romanVideo = await videoService.getUserVideosID(1);
+        console.log(romanVideo);
+        //id видосов подгружаем в массив
+        //const videoIds = await videoService.getUserVideosID(userId);                  ROMAAAAAAAN
+        //console.log('Видео пользователя :', videoIds);
+        //setUserVideos(videoIds);
       } catch (e) {
         setError("Ошибка загрузки профиля");
       }
     };
     fetchUser();
   }, []);
+
 
   const userVideos = [
     //Вот этот массив по ID пользователя нужно заполнять с помощью запроса к сервису Ромы
@@ -59,7 +73,7 @@ function ProfilePage() {
       tags: "#привет #rutok",
       likes: 10,
       comments: 2,
-      idVideo: 2,
+      idVideo: 14,
     },
     {
       user: { avatar: user?.avatar || "", username: user?.username || "" },
@@ -176,7 +190,7 @@ function ProfilePage() {
               preview={video.idVideo} //передаем ссылку на превью
               description={video.description}
               tags={video.tags}
-              avatar={video.user.avatar}
+              avatar={video.user.avatar ||'https://i.pravatar.cc/120?img=3'}
               username={video.user.username}
               onClick={() => handleFrameClick(idx)}
             />
