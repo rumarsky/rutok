@@ -1,21 +1,27 @@
-import React, { useState, useEffect } from "react";
-import Sidebar from "../components/Sidebar";
-import UploadModal from "../components/UploadModal";
-import VideoFrame from "../components/VideoFrame";
-import VideoFeed from "../components/VideoFeed";
-import Notification from "../components/Notification";
-import "./ProfilePage.css";
-import authService from "../services/authService";
-import userService from "../services/userService";
-import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
+
+import React, { useState, useEffect } from 'react';
+import Sidebar from '../components/Sidebar';
+import UploadModal from '../components/UploadModal';
+import VideoFrame from '../components/VideoFrame';
+import VideoFeed from '../components/VideoFeed';
+import './ProfilePage.css';
+import authService from '../services/authService';
+import userService from '../services/userService';
+import videoService from '../services/videoService';
+
+import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+
 
 function ProfilePage() {
   const [showUpload, setShowUpload] = useState(false);
   const [openFeed, setOpenFeed] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [user, setUser] = useState(null);
-  const [error, setError] = useState("");
+
+  const [error, setError] = useState('');
+  const [userVid, setUserVideos] = useState([]);
+
   const navigate = useNavigate();
 
   const [notification, setNotification] = useState(null);
@@ -26,19 +32,29 @@ function ProfilePage() {
         const token = authService.getAccessToken();
         const payload = token ? jwtDecode(token) : null;
         const userId = payload?.user_id;
-        console.log("User ID : " + userId);
+
+        console.log("User ID : " +  userId );
+
         if (!userId) {
           setError("Не удалось определить пользователя");
           return;
         }
         const userData = await userService.getUserById(userId);
         setUser(userData);
+        
+        const romanVideo = await videoService.getUserVideosID(1);
+        console.log(romanVideo);
+        //id видосов подгружаем в массив
+        //const videoIds = await videoService.getUserVideosID(userId);                  ROMAAAAAAAN
+        //console.log('Видео пользователя :', videoIds);
+        //setUserVideos(videoIds);
       } catch (e) {
         setError("Ошибка загрузки профиля");
       }
     };
     fetchUser();
   }, []);
+
 
   const userVideos = [
     //Вот этот массив по ID пользователя нужно заполнять с помощью запроса к сервису Ромы
@@ -53,46 +69,56 @@ function ProfilePage() {
       idVideo: 1,
     },
     {
-      user: { avatar: user?.avatar || "", username: user?.username || "" },
-      title: "Мой первый ролик",
-      description: "Это мой первый ролик на RuTok!",
-      tags: "#привет #rutok",
+
+      user: { avatar: user?.avatar || '', username: user?.username || '' },
+      title: 'Мой первый ролик',
+      description: 'Это мой первый ролик на RuTok!',
+      tags: '#привет #rutok',
+
       likes: 10,
       comments: 2,
-      idVideo: 2,
+      idVideo: 14,
     },
     {
-      user: { avatar: user?.avatar || "", username: user?.username || "" },
-      title: "Мой первый ролик",
-      description: "Это мой первый ролик на RuTok!",
-      tags: "#привет #rutok",
+
+      user: { avatar: user?.avatar || '', username: user?.username || '' },
+      title: 'Мой первый ролик',
+      description: 'Это мой первый ролик на RuTok!',
+      tags: '#привет #rutok',
+
       likes: 10,
       comments: 2,
       idVideo: 1,
     },
     {
-      user: { avatar: user?.avatar || "", username: user?.username || "" },
-      title: "Мой первый ролик",
-      description: "Это мой первый ролик на RuTok!",
-      tags: "#привет #rutok",
+
+      user: { avatar: user?.avatar || '', username: user?.username || '' },
+      title: 'Мой первый ролик',
+      description: 'Это мой первый ролик на RuTok!',
+      tags: '#привет #rutok',
+
       likes: 10,
       comments: 2,
       idVideo: 2,
     },
     {
+
       user: { avatar: user?.avatar || "", username: user?.username || "" },
       title: "Мой первый ролик",
       description: "Это мой первый ролик на RuTok!",
       tags: "#привет #rutok",
+
       likes: 10,
       comments: 2,
       idVideo: 4,
     },
     {
+
       user: { avatar: user?.avatar || "", username: user?.username || "" },
       title: "Мой первый ролик",
       description: "Это мой первый ролик на RuTok!",
       tags: "#привет #rutok",
+
       likes: 10,
       comments: 2,
       idVideo: 2,
@@ -173,10 +199,12 @@ function ProfilePage() {
             <VideoFrame
               key={idx}
               title={video.title}
+
               preview={video.idVideo} //передаем ссылку на превью
+
               description={video.description}
               tags={video.tags}
-              avatar={video.user.avatar}
+              avatar={video.user.avatar ||'https://i.pravatar.cc/120?img=3'}
               username={video.user.username}
               onClick={() => handleFrameClick(idx)}
             />
@@ -204,13 +232,7 @@ function ProfilePage() {
           </div>
         </div>
       )}
-      {notification && (
-        <Notification
-          message={notification.message}
-          type={notification.type}
-          onClose={() => setNotification(null)}
-        />
-      )}
+      
     </div>
   );
 }

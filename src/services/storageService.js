@@ -35,7 +35,7 @@ async function publicFetch(url, options = {}) {
     }
   
     return await response.json();
-  }
+}
 
 async function uploadVideo(video, preview) {
   const data = new FormData();
@@ -56,8 +56,13 @@ async function getPreviewUrl(videoId) {
   return await publicFetch(`${API_URL}/files/preview/${videoId}`);
 }
 
+async function getVideosIds() {
+  return await publicFetch(`${API_URL}/files/videos`);
+}
+
 export default {
   uploadVideo,
   getVideoUrl,
   getPreviewUrl,
+  getVideosIds,
 };
