@@ -43,14 +43,14 @@ function SettingsPage() {
               <option value="light">Светлая</option>
             </select>
           </label>
-          <label className="settings-checkbox">
+          {/* <label className="settings-checkbox">
             <input
               type="checkbox"
               checked={notifications}
               onChange={e => setNotifications(e.target.checked)}
             />
             Получать уведомления
-          </label>
+          </label> */}
           <button className="settings-save-btn" type="submit">Сохранить</button>
         </form>
       </div>
