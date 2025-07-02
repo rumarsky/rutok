@@ -1,21 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import Sidebar from '../components/Sidebar';
-import UploadModal from '../components/UploadModal';
-import VideoFrame from '../components/VideoFrame';
-import VideoFeed from '../components/VideoFeed';
-import './ProfilePage.css';
-import authService from '../services/authService';
-import userService from '../services/userService';
-import { useNavigate } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
+import React, { useState, useEffect } from "react";
+import Sidebar from "../components/Sidebar";
+import UploadModal from "../components/UploadModal";
+import VideoFrame from "../components/VideoFrame";
+import VideoFeed from "../components/VideoFeed";
+import Notification from "../components/Notification";
+import "./ProfilePage.css";
+import authService from "../services/authService";
+import userService from "../services/userService";
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 function ProfilePage() {
   const [showUpload, setShowUpload] = useState(false);
   const [openFeed, setOpenFeed] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [user, setUser] = useState(null);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -23,15 +26,15 @@ function ProfilePage() {
         const token = authService.getAccessToken();
         const payload = token ? jwtDecode(token) : null;
         const userId = payload?.user_id;
-        console.log("User ID : " +  userId )
+        console.log("User ID : " + userId);
         if (!userId) {
-          setError('Не удалось определить пользователя');
+          setError("Не удалось определить пользователя");
           return;
         }
         const userData = await userService.getUserById(userId);
         setUser(userData);
       } catch (e) {
-        setError('Ошибка загрузки профиля');
+        setError("Ошибка загрузки профиля");
       }
     };
     fetchUser();
@@ -41,55 +44,55 @@ function ProfilePage() {
     //Вот этот массив по ID пользователя нужно заполнять с помощью запроса к сервису Ромы
     //Тогда все будет соответствовать, пока поставил затычку
     {
-      user: { avatar: user?.avatar || '', username: user?.username || '' },
-      title: 'Мой первый ролик',
-      description: 'Это мой первый ролик на RuTok!',
-      tags: '#привет #rutok',
+      user: { avatar: user?.avatar || "", username: user?.username || "" },
+      title: "Мой первый ролик",
+      description: "Это мой первый ролик на RuTok!",
+      tags: "#привет #rutok",
       likes: 10,
       comments: 2,
       idVideo: 1,
     },
     {
-      user: { avatar: user?.avatar || '', username: user?.username || '' },
-      title: 'Мой первый ролик',
-      description: 'Это мой первый ролик на RuTok!',
-      tags: '#привет #rutok',
+      user: { avatar: user?.avatar || "", username: user?.username || "" },
+      title: "Мой первый ролик",
+      description: "Это мой первый ролик на RuTok!",
+      tags: "#привет #rutok",
       likes: 10,
       comments: 2,
       idVideo: 2,
     },
     {
-      user: { avatar: user?.avatar || '', username: user?.username || '' },
-      title: 'Мой первый ролик',
-      description: 'Это мой первый ролик на RuTok!',
-      tags: '#привет #rutok',
+      user: { avatar: user?.avatar || "", username: user?.username || "" },
+      title: "Мой первый ролик",
+      description: "Это мой первый ролик на RuTok!",
+      tags: "#привет #rutok",
       likes: 10,
       comments: 2,
       idVideo: 1,
     },
     {
-      user: { avatar: user?.avatar || '', username: user?.username || '' },
-      title: 'Мой первый ролик',
-      description: 'Это мой первый ролик на RuTok!',
-      tags: '#привет #rutok',
+      user: { avatar: user?.avatar || "", username: user?.username || "" },
+      title: "Мой первый ролик",
+      description: "Это мой первый ролик на RuTok!",
+      tags: "#привет #rutok",
       likes: 10,
       comments: 2,
       idVideo: 2,
     },
     {
-      user: { avatar: user?.avatar || '', username: user?.username || '' },
-      title: 'Мой первый ролик',
-      description: 'Это мой первый ролик на RuTok!',
-      tags: '#привет #rutok',
+      user: { avatar: user?.avatar || "", username: user?.username || "" },
+      title: "Мой первый ролик",
+      description: "Это мой первый ролик на RuTok!",
+      tags: "#привет #rutok",
       likes: 10,
       comments: 2,
       idVideo: 4,
     },
     {
-      user: { avatar: user?.avatar || '', username: user?.username || '' },
-      title: 'Мой первый ролик',
-      description: 'Это мой первый ролик на RuTok!',
-      tags: '#привет #rutok',
+      user: { avatar: user?.avatar || "", username: user?.username || "" },
+      title: "Мой первый ролик",
+      description: "Это мой первый ролик на RuTok!",
+      tags: "#привет #rutok",
       likes: 10,
       comments: 2,
       idVideo: 2,
@@ -103,15 +106,25 @@ function ProfilePage() {
 
   const handleLogout = async () => {
     await authService.logout();
-    navigate('/login');
+    navigate("/login");
   };
 
   if (error) {
-    return <div className="main-page"><Sidebar /><div className="profile-content">{error}</div></div>;
+    return (
+      <div className="main-page">
+        <Sidebar />
+        <div className="profile-content">{error}</div>
+      </div>
+    );
   }
 
   if (!user) {
-    return <div className="main-page"><Sidebar /><div className="profile-content">Загрузка...</div></div>;
+    return (
+      <div className="main-page">
+        <Sidebar />
+        <div className="profile-content">Загрузка...</div>
+      </div>
+    );
   }
 
   return (
@@ -119,17 +132,29 @@ function ProfilePage() {
       <Sidebar />
       <div className="profile-content">
         <div className="profile-header">
-          <img className="profile-avatar" src={user.avatar || 'https://i.pravatar.cc/120?img=3'} alt="Аватар" />
+          <img
+            className="profile-avatar"
+            src={user.avatar || "https://i.pravatar.cc/120?img=3"}
+            alt="Аватар"
+          />
           <div className="profile-info">
             <div className="profile-username">@{user.username}</div>
             <div className="profile-name">{user.name || user.username}</div>
-            <div className="profile-bio">{user.bio || ''}</div>
+            <div className="profile-bio">{user.bio || ""}</div>
             <div className="profile-stats">
               {/* Здесь можно добавить реальные данные, если они есть в user */}
-              <div><b>0</b> роликов</div>
-              <div><b>0</b> подписчиков</div>
-              <div><b>0</b> подписки</div>
-              <div><b>0</b> лайков</div>
+              <div>
+                <b>0</b> роликов
+              </div>
+              <div>
+                <b>0</b> подписчиков
+              </div>
+              <div>
+                <b>0</b> подписки
+              </div>
+              <div>
+                <b>0</b> лайков
+              </div>
             </div>
             <button className="profile-logout-btn" onClick={handleLogout}>
               Выйти
@@ -148,7 +173,7 @@ function ProfilePage() {
             <VideoFrame
               key={idx}
               title={video.title}
-              preview={video.idVideo}   //передаем ссылку на превью
+              preview={video.idVideo} //передаем ссылку на превью
               description={video.description}
               tags={video.tags}
               avatar={video.user.avatar}
@@ -160,8 +185,14 @@ function ProfilePage() {
       </div>
       <UploadModal visible={showUpload} onClose={() => setShowUpload(false)} />
       {openFeed && (
-        <div className="video-feed-modal-backdrop" onClick={() => setOpenFeed(false)}>
-          <div className="video-feed-modal" onClick={e => e.stopPropagation()}>
+        <div
+          className="video-feed-modal-backdrop"
+          onClick={() => setOpenFeed(false)}
+        >
+          <div
+            className="video-feed-modal"
+            onClick={(e) => e.stopPropagation()}
+          >
             <VideoFeed
               videos={userVideos}
               initialIndex={currentIndex}
@@ -169,6 +200,13 @@ function ProfilePage() {
             />
           </div>
         </div>
+      )}
+      {notification && (
+        <Notification
+          message={notification.message}
+          type={notification.type}
+          onClose={() => setNotification(null)}
+        />
       )}
     </div>
   );
