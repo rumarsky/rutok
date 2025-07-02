@@ -183,7 +183,10 @@ function ProfilePage() {
           ))}
         </div>
       </div>
-      <UploadModal visible={showUpload} onClose={() => setShowUpload(false)} />
+      <UploadModal visible={showUpload} onClose={() => {
+        setShowUpload(false)
+        setNotification({ type: 'success', message: 'Видео загружено!' })
+      }} />
       {openFeed && (
         <div
           className="video-feed-modal-backdrop"
