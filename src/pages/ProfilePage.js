@@ -32,7 +32,9 @@ function ProfilePage() {
         const token = authService.getAccessToken();
         const payload = token ? jwtDecode(token) : null;
         const userId = payload?.user_id;
-        console.log("User ID : " + userId);
+
+        console.log("User ID : " +  userId );
+
         if (!userId) {
           setError("Не удалось определить пользователя");
           return;
@@ -67,46 +69,56 @@ function ProfilePage() {
       idVideo: 1,
     },
     {
-      user: { avatar: user?.avatar || "", username: user?.username || "" },
-      title: "Мой первый ролик",
-      description: "Это мой первый ролик на RuTok!",
-      tags: "#привет #rutok",
+
+      user: { avatar: user?.avatar || '', username: user?.username || '' },
+      title: 'Мой первый ролик',
+      description: 'Это мой первый ролик на RuTok!',
+      tags: '#привет #rutok',
+
       likes: 10,
       comments: 2,
       idVideo: 14,
     },
     {
-      user: { avatar: user?.avatar || "", username: user?.username || "" },
-      title: "Мой первый ролик",
-      description: "Это мой первый ролик на RuTok!",
-      tags: "#привет #rutok",
+
+      user: { avatar: user?.avatar || '', username: user?.username || '' },
+      title: 'Мой первый ролик',
+      description: 'Это мой первый ролик на RuTok!',
+      tags: '#привет #rutok',
+
       likes: 10,
       comments: 2,
       idVideo: 1,
     },
     {
-      user: { avatar: user?.avatar || "", username: user?.username || "" },
-      title: "Мой первый ролик",
-      description: "Это мой первый ролик на RuTok!",
-      tags: "#привет #rutok",
+
+      user: { avatar: user?.avatar || '', username: user?.username || '' },
+      title: 'Мой первый ролик',
+      description: 'Это мой первый ролик на RuTok!',
+      tags: '#привет #rutok',
+
       likes: 10,
       comments: 2,
       idVideo: 2,
     },
     {
+
       user: { avatar: user?.avatar || "", username: user?.username || "" },
       title: "Мой первый ролик",
       description: "Это мой первый ролик на RuTok!",
       tags: "#привет #rutok",
+
       likes: 10,
       comments: 2,
       idVideo: 4,
     },
     {
+
       user: { avatar: user?.avatar || "", username: user?.username || "" },
       title: "Мой первый ролик",
       description: "Это мой первый ролик на RuTok!",
       tags: "#привет #rutok",
+
       likes: 10,
       comments: 2,
       idVideo: 2,
@@ -187,7 +199,9 @@ function ProfilePage() {
             <VideoFrame
               key={idx}
               title={video.title}
+
               preview={video.idVideo} //передаем ссылку на превью
+
               description={video.description}
               tags={video.tags}
               avatar={video.user.avatar ||'https://i.pravatar.cc/120?img=3'}
@@ -218,13 +232,7 @@ function ProfilePage() {
           </div>
         </div>
       )}
-      {notification && (
-        <Notification
-          message={notification.message}
-          type={notification.type}
-          onClose={() => setNotification(null)}
-        />
-      )}
+      
     </div>
   );
 }

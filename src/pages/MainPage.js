@@ -7,12 +7,6 @@ import videoService from '../services/videoService';
 import userService from '../services/userService';
 import './MainPage.css';
 
-  
-
-
-//Пока от себя загружаю
-
-
 const  romanAllVideos = await videoService.getAllUserVideos();
 console.log(romanAllVideos);
 
