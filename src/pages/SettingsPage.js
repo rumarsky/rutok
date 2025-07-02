@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import Sidebar from '../components/Sidebar';
+import userService from '../services/userService';
 import './SettingsPage.css';
 
 function SettingsPage() {
   const [name, setName] = useState('Иван Иванов');
   const [email, setEmail] = useState('user@example.com');
   const [theme, setTheme] = useState('dark');
-  const [notifications, setNotifications] = useState(true);
+  const [password, setPassword] = useState('');
+  //const [notifications, setNotifications] = useState(true);
 
   const handleSave = (e) => {
     e.preventDefault();
     alert('Настройки сохранены!');
     // Здесь можно реализовать отправку данных на сервер
+
   };
 
   return (
@@ -21,7 +24,7 @@ function SettingsPage() {
         <h1 className="settings-title">Настройки</h1>
         <form className="settings-form" onSubmit={handleSave}>
           <label>
-            Имя:
+            Имя пользователя:
             <input
               type="text"
               value={name}
@@ -34,6 +37,13 @@ function SettingsPage() {
               type="email"
               value={email}
               onChange={e => setEmail(e.target.value)}
+            />
+          </label>
+          <label>
+            Пароль:
+            <input type="password" 
+              value={password}
+              onChange={e => setPassword(e.target.value)}
             />
           </label>
           <label>
