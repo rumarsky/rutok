@@ -21,7 +21,7 @@ function Sidebar() {
           end
         >
           <MdHome className="sidebar-icon" />
-          Главная
+          <span className="sidebar-link-text">Главная</span>
         </NavLink>
         <NavLink
           to="/recommendations"
@@ -29,7 +29,7 @@ function Sidebar() {
           title="Рекомендации"
         >
           <MdExplore className="sidebar-icon" />
-          Рекомендации
+          <span className="sidebar-link-text">Рекомендации</span>
         </NavLink>
         {isAuth ? (
           <NavLink
@@ -38,7 +38,7 @@ function Sidebar() {
             title="Профиль"
           >
             <MdPerson className="sidebar-icon" />
-            Профиль
+            <span className="sidebar-link-text">Профиль</span>
           </NavLink>
         ) : (
           <NavLink
@@ -47,14 +47,14 @@ function Sidebar() {
             title="Вход"
           >
             <MdLogin className="sidebar-icon" />
-            Вход
+            <span className="sidebar-link-text">Вход</span>
           </NavLink>
         )}
       </div>
       <div className="sidebar-bottom">
         <NavLink
           to="/settings"
-          className="sidebar-link sidebar-link-bottom"
+          className={({ isActive }) => 'sidebar-link sidebar-link-bottom' + (isActive ? ' active' : '')}
           title="Настройки"
         >
           <MdSettings className="sidebar-icon" />
