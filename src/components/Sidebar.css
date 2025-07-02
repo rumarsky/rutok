@@ -1,7 +1,6 @@
 .sidebar {
   flex: 1 1 0;
-  max-width: 16.666vw;
-  min-width: 100px;
+  min-width: 300px;
   background: #222;
   color: #fff;
   display: flex;
@@ -80,7 +79,7 @@
   font-weight: 600;
   padding: 10px 24px;
   border-radius: 8px;
-  width: 83%;
+  width: 78%;
   text-align: left;
   transition: background 0.2s, color 0.2s, transform 0.15s;
   cursor: pointer;
@@ -127,3 +126,73 @@
 .sidebar-link-text {
   display: inline;
 }
+
+.sidebar-link-text {
+  display: inline;
+}
+
+
+@media screen and (max-width: 1024px) {
+  .sidebar {
+    min-width: 80px;
+    max-width: 90px;
+    align-items: center; 
+  }
+
+  .sidebar-logo {
+    font-size: 24px;
+    margin: 16px auto;
+    text-align: center;
+    align-self: center;
+  }
+
+  .sidebar-search {
+    display: none; 
+  }
+
+  .sidebar-divider {
+    width: 60%;
+    margin: 0 auto 16px auto;
+  }
+
+  .sidebar-links {
+    align-items: center; 
+    gap: 12px;
+  }
+
+  .sidebar-link {
+    width: auto;
+    padding: 10px;
+    justify-content: center;
+  }
+
+  .sidebar-link-text {
+    display: none; 
+  }
+
+  .sidebar-icon {
+    font-size: 28px;
+  }
+
+  .sidebar-bottom {
+    justify-content: center;
+  }
+
+  .sidebar-link-bottom {
+    padding: 10px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+
+  .sidebar-logo {
+    font-size: 20px;
+    margin: 12px auto;
+  }
+
+  .sidebar-icon {
+    font-size: 24px;
+  }
+}
+
+  

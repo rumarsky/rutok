@@ -1,17 +1,81 @@
-import React, { useState } from 'react';
-import Sidebar from '../components/Sidebar';
-import './SettingsPage.css';
+import React, { useEffect, useState } from "react";
+import Sidebar from "../components/Sidebar";
+import userService from "../services/userService";
+import authService from "../services/authService";
+import Notification from "../components/Notification"; // Импортируем компонент уведомления
+import { jwtDecode } from "jwt-decode";
+import "./SettingsPage.css";
 
 function SettingsPage() {
-  const [name, setName] = useState('Иван Иванов');
-  const [email, setEmail] = useState('user@example.com');
-  const [theme, setTheme] = useState('dark');
-  const [notifications, setNotifications] = useState(true);
+  const [name, setName] = useState(null);
+  // const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [error, setError] = useState(null);
+  const [theme, setTheme] = useState("dark");
+  const [notification, setNotification] = useState(null); 
 
-  const handleSave = (e) => {
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = authService.getAccessToken();
+        const payload = token ? jwtDecode(token) : null;
+        const userId = payload?.user_id;
+        const userData = await userService.getUserById(userId);
+
+        setName(userData.username || "");
+        // setEmail(userData.email || "");
+        setPassword(userData.password || "");
+      } catch (error) {
+        setError(`Ошибка загрузки данных пользователя: ${error.message}`);
+        setNotification({
+          message: `Ошибка загрузки данных: ${error.message}`,
+          type: "error",
+        });
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  if (name === null) {
+    return (
+      <div className="main-page">
+        <Sidebar />
+        <div className="settings-content">
+          <h1 className="settings-title">Настройки</h1>
+          <div className="settings-skeleton">{/* Skeleton Loading */}</div>
+        </div>
+      </div>
+    );
+  }
+
+  const handleSave = async (e) => {
     e.preventDefault();
-    alert('Настройки сохранены!');
-    // Здесь можно реализовать отправку данных на сервер
+    const token = authService.getAccessToken();
+    const payload = token ? jwtDecode(token) : null;
+    const userId = payload?.user_id;
+
+    await userService
+      .updateUser(userId, {
+        username: name,
+        // email: email,
+        password: password,
+        theme: theme,
+      })
+      .then(() => {
+        setNotification({
+          message: "Настройки успешно сохранены!",
+          type: "success",
+        });
+        //window.location.reload();
+      })
+      .catch((error) => {
+        setError(`Ошибка сохранения данных пользователя: ${error.message}`);
+        setNotification({
+          message: `Ошибка сохранения данных`,
+          type: "error",
+        });
+      });
   };
 
   return (
@@ -21,38 +85,47 @@ function SettingsPage() {
         <h1 className="settings-title">Настройки</h1>
         <form className="settings-form" onSubmit={handleSave}>
           <label>
-            Имя:
+            Имя пользователя:
             <input
               type="text"
               value={name}
-              onChange={e => setName(e.target.value)}
+              onChange={(e) => setName(e.target.value)}
             />
           </label>
-          <label>
+          {/* <label>
             Email:
             <input
               type="email"
               value={email}
-              onChange={e => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </label> */}
+          <label>
+            Новый пароль:
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </label>
           <label>
             Тема:
-            <select value={theme} onChange={e => setTheme(e.target.value)}>
+            <select value={theme} onChange={(e) => setTheme(e.target.value)}>
               <option value="dark">Тёмная</option>
               <option value="light">Светлая</option>
             </select>
           </label>
-          <label className="settings-checkbox">
-            <input
-              type="checkbox"
-              checked={notifications}
-              onChange={e => setNotifications(e.target.checked)}
-            />
-            Получать уведомления
-          </label>
-          <button className="settings-save-btn" type="submit">Сохранить</button>
+          <button className="settings-save-btn" type="submit">
+            Сохранить
+          </button>
         </form>
+        {notification && (
+          <Notification
+            message={notification.message}
+            type={notification.type}
+            onClose={() => setNotification(null)}
+          />
+        )}
       </div>
     </div>
   );

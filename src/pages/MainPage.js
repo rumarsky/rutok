@@ -4,6 +4,8 @@ import VideoFrame from '../components/VideoFrame';
 import VideoFeed from '../components/VideoFeed';
 import './MainPage.css';
 
+
+//Данный массив формироваться будет по запросу к сервису Романа (все видео)
 const videos = [
   {
     user: { avatar: 'https://i.pravatar.cc/40?img=5', username: 'rutok_user' },
@@ -12,6 +14,7 @@ const videos = [
     tags: '#кот #милота #тренды',
     likes: 123,
     comments: 10,
+    idVideo: 1, 
     commentsList: [
       { author: 'cat_lover', text: 'Какой милый!' },
       { author: 'user123', text: 'Хочу такого же кота!' },
@@ -24,6 +27,46 @@ const videos = [
     tags: '#спорт #скейт #экстрим',
     likes: 98,
     comments: 7,
+    idVideo: 15, //добавил id видоса
+    commentsList: [
+      { author: 'skatefan', text: 'Круто!' },
+      { author: 'pro_skater', text: 'Давай ещё!' },
+    ],
+  },
+  {
+    user: { avatar: 'https://i.pravatar.cc/40?img=6', username: 'skater_boy' },
+    title: 'Трюки на скейте',
+    description: 'Лучшие трюки этого лета!',
+    tags: '#спорт #скейт #экстрим',
+    likes: 98,
+    comments: 7,
+    idVideo: 1, //добавил id видоса
+    commentsList: [
+      { author: 'skatefan', text: 'Круто!' },
+      { author: 'pro_skater', text: 'Давай ещё!' },
+    ],
+  },
+  {
+    user: { avatar: 'https://i.pravatar.cc/40?img=6', username: 'skater_boy' },
+    title: 'Трюки на скейте',
+    description: 'Лучшие трюки этого лета!',
+    tags: '#спорт #скейт #экстрим',
+    likes: 98,
+    comments: 7,
+    idVideo: 6, //добавил id видоса
+    commentsList: [
+      { author: 'skatefan', text: 'Круто!' },
+      { author: 'pro_skater', text: 'Давай ещё!' },
+    ],
+  },
+  {
+    user: { avatar: 'https://i.pravatar.cc/40?img=6', username: 'skater_boy' },
+    title: 'Трюки на скейте',
+    description: 'Лучшие трюки этого лета!',
+    tags: '#спорт #скейт #экстрим',
+    likes: 98,
+    comments: 7,
+    idVideo: 4, //добавил id видоса
     commentsList: [
       { author: 'skatefan', text: 'Круто!' },
       { author: 'pro_skater', text: 'Давай ещё!' },
@@ -65,6 +108,7 @@ function MainPage() {
             <VideoFrame
               key={idx}
               title={video.title}
+              preview={video.idVideo}
               description={video.description}
               tags={video.tags}
               avatar={video.user.avatar}

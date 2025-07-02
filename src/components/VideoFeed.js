@@ -1,13 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MdFavorite, MdComment } from 'react-icons/md';
+import { MdFavorite, MdComment} from 'react-icons/md';
 import CommentPanel from './CommentPanel';
 import './VideoFeed.css';
+import storageService from '../services/storageService';
 
 function VideoFeed({ videos = [], initialIndex = 0, onClose }) {
   const [current, setCurrent] = useState(initialIndex);
   const [showComments, setShowComments] = useState(false);
   const [liked, setLiked] = useState(false);
   const [allVideos, setAllVideos] = useState(videos);
+
+  const [videoUrl, setVideoUrl] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const [isPlaying, setIsPlaying] = useState(true);
+
+
+  const videoRef = useRef(null);
+
   const touchStartY = useRef(null);
 
   const video = allVideos[current];
@@ -26,6 +36,53 @@ function VideoFeed({ videos = [], initialIndex = 0, onClose }) {
       return updated;
     });
   };
+  //остановка на паузу 
+  const togglePlayPause = () => {
+    if (videoRef.current.paused) {
+      videoRef.current.play();
+      setIsPlaying(true);
+    } else {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    }
+  };
+
+  //для загрузки видео
+  useEffect(() => {
+    const loadVideo = async () => {
+      if (!video?.idVideo) {
+        setLoading(false);
+        return;
+      }
+      
+      setLoading(true);
+      console.log('Начало загрузки видео, ID:', video.idVideo);
+      
+      try {
+        const response = await storageService.getVideoUrl(video.idVideo);
+        console.log('Ответ от сервера:', response);
+        
+        if (!response?.urlVideo) {
+          throw new Error('URL видео не получен');
+        }
+        
+        setVideoUrl(response.urlVideo);
+      } catch (err) {
+        console.error('Ошибка загрузки видео:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadVideo();
+  }, [current, video?.idVideo]);
+//управление воспроизведением
+  useEffect(() => {
+    if (videoRef.current && videoUrl) {
+      videoRef.current.load();
+      videoRef.current.play().catch(e => console.log('Автовоспроизведение не разрешено:', e));
+    }
+  }, [videoUrl]);
 
   // Клавиши вверх/вниз
   useEffect(() => {
@@ -83,8 +140,27 @@ function VideoFeed({ videos = [], initialIndex = 0, onClose }) {
         onTouchEnd={handleTouchEnd}
       >
         <div className="video-content">
-          {/* Здесь будет видео или его превью */}
-          Вертикальный видеоролик
+            {/* Здесь будет видео или его превью */}
+            {loading ? (
+              <div>Загрузка видео...</div>
+            ) : videoUrl ? (
+              <video
+                ref={videoRef}
+                src={videoUrl}
+                controls={false}
+                loop
+                playsInline
+                onClick={togglePlayPause}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  borderRadius: '24px'
+                }}
+              />
+            ) : (
+              <div>Не удалось загрузить видео</div>
+            )}
         </div>
         <div className="video-info">
           <div className="video-info-user">

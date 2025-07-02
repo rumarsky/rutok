@@ -24,7 +24,7 @@ function UploadModal({ visible, onClose }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Здесь можно реализовать отправку данных на сервер
-    alert('Видео загружено!');
+    //alert('Видео загружено!');
     onClose();
   };
 
