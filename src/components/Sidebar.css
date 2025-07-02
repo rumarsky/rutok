@@ -80,7 +80,7 @@
   font-weight: 600;
   padding: 10px 24px;
   border-radius: 8px;
-  width: 83%;
+  width: 78%;
   text-align: left;
   transition: background 0.2s, color 0.2s, transform 0.15s;
   cursor: pointer;
@@ -127,3 +127,6 @@
 .sidebar-link-text {
   display: inline;
 }
+
+
+  
