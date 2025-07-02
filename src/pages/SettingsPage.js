@@ -8,7 +8,7 @@ import "./SettingsPage.css";
 
 function SettingsPage() {
   const [name, setName] = useState(null);
-  const [email, setEmail] = useState(null);
+  // const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [error, setError] = useState(null);
   const [theme, setTheme] = useState("dark");
@@ -23,7 +23,7 @@ function SettingsPage() {
         const userData = await userService.getUserById(userId);
 
         setName(userData.username || "");
-        setEmail(userData.email || "");
+        // setEmail(userData.email || "");
         setPassword(userData.password || "");
       } catch (error) {
         setError(`Ошибка загрузки данных пользователя: ${error.message}`);
@@ -49,16 +49,16 @@ function SettingsPage() {
     );
   }
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
     const token = authService.getAccessToken();
     const payload = token ? jwtDecode(token) : null;
     const userId = payload?.user_id;
 
-    userService
+    await userService
       .updateUser(userId, {
         username: name,
-        email: email,
+        // email: email,
         password: password,
         theme: theme,
       })
@@ -72,7 +72,7 @@ function SettingsPage() {
       .catch((error) => {
         setError(`Ошибка сохранения данных пользователя: ${error.message}`);
         setNotification({
-          message: `Ошибка сохранения данных: ${error.message}`,
+          message: `Ошибка сохранения данных`,
           type: "error",
         });
       });
@@ -92,14 +92,14 @@ function SettingsPage() {
               onChange={(e) => setName(e.target.value)}
             />
           </label>
-          <label>
+          {/* <label>
             Email:
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-          </label>
+          </label> */}
           <label>
             Новый пароль:
             <input
