@@ -4,6 +4,7 @@ import Sidebar from '../components/Sidebar';
 import UploadModal from '../components/UploadModal';
 import VideoFrame from '../components/VideoFrame';
 import VideoFeed from '../components/VideoFeed';
+import Notification from '../components/Notification';
 import './ProfilePage.css';
 import authService from '../services/authService';
 import userService from '../services/userService';
@@ -208,7 +209,13 @@ function ProfilePage() {
           </div>
         </div>
       )}
-      
+      {notification && (
+          <Notification
+            message={notification.message}
+            type={notification.type}
+            onClose={() => setNotification(null)}
+          />
+        )}
     </div>
   );
 }
