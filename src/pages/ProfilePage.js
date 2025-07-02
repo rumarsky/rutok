@@ -23,6 +23,7 @@ function ProfilePage() {
         const token = authService.getAccessToken();
         const payload = token ? jwtDecode(token) : null;
         const userId = payload?.user_id;
+        console.log("User ID : " +  userId )
         if (!userId) {
           setError('Не удалось определить пользователя');
           return;
@@ -37,8 +38,8 @@ function ProfilePage() {
   }, []);
 
   const userVideos = [
-    // Здесь можно реализовать загрузку видео пользователя по user.id
-    // Пока оставим как пример:
+    //Вот этот массив по ID пользователя нужно заполнять с помощью запроса к сервису Ромы
+    //Тогда все будет соответствовать, пока поставил затычку
     {
       user: { avatar: user?.avatar || '', username: user?.username || '' },
       title: 'Мой первый ролик',
@@ -46,8 +47,53 @@ function ProfilePage() {
       tags: '#привет #rutok',
       likes: 10,
       comments: 2,
+      idVideo: 1,
     },
-    // ...другие видео
+    {
+      user: { avatar: user?.avatar || '', username: user?.username || '' },
+      title: 'Мой первый ролик',
+      description: 'Это мой первый ролик на RuTok!',
+      tags: '#привет #rutok',
+      likes: 10,
+      comments: 2,
+      idVideo: 2,
+    },
+    {
+      user: { avatar: user?.avatar || '', username: user?.username || '' },
+      title: 'Мой первый ролик',
+      description: 'Это мой первый ролик на RuTok!',
+      tags: '#привет #rutok',
+      likes: 10,
+      comments: 2,
+      idVideo: 1,
+    },
+    {
+      user: { avatar: user?.avatar || '', username: user?.username || '' },
+      title: 'Мой первый ролик',
+      description: 'Это мой первый ролик на RuTok!',
+      tags: '#привет #rutok',
+      likes: 10,
+      comments: 2,
+      idVideo: 2,
+    },
+    {
+      user: { avatar: user?.avatar || '', username: user?.username || '' },
+      title: 'Мой первый ролик',
+      description: 'Это мой первый ролик на RuTok!',
+      tags: '#привет #rutok',
+      likes: 10,
+      comments: 2,
+      idVideo: 4,
+    },
+    {
+      user: { avatar: user?.avatar || '', username: user?.username || '' },
+      title: 'Мой первый ролик',
+      description: 'Это мой первый ролик на RuTok!',
+      tags: '#привет #rutok',
+      likes: 10,
+      comments: 2,
+      idVideo: 2,
+    },
   ];
 
   const handleFrameClick = (idx) => {
@@ -102,6 +148,7 @@ function ProfilePage() {
             <VideoFrame
               key={idx}
               title={video.title}
+              preview={video.idVideo}   //передаем ссылку на превью
               description={video.description}
               tags={video.tags}
               avatar={video.user.avatar}
