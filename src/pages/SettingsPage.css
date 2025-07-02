@@ -28,6 +28,7 @@
 
 .settings-form input[type="text"],
 .settings-form input[type="email"],
+.settings-form input[type="password"],
 .settings-form select {
   padding: 8px 12px;
   border-radius: 6px;
