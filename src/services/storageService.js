@@ -24,6 +24,19 @@ async function authFetch(url, options = {}) {
   return await response.json();
 }
 
+//для неавторизованных запросов
+async function publicFetch(url, options = {}) {
+    const response = await fetch(url, options);
+  
+    if (!response.ok) {
+      const error = new Error(response.statusText);
+      error.response = response;
+      throw error;
+    }
+  
+    return await response.json();
+  }
+
 async function uploadVideo(video, preview) {
   const data = new FormData();
   data.append('file', video);
@@ -36,11 +49,11 @@ async function uploadVideo(video, preview) {
 }
 
 async function getVideoUrl(videoId) {
-  return await authFetch(`${API_URL}/files/${videoId}`);
+  return await publicFetch(`${API_URL}/files/${videoId}`);
 }
 
 async function getPreviewUrl(videoId) {
-  return await authFetch(`${API_URL}/files/preview/${videoId}`);
+  return await publicFetch(`${API_URL}/files/preview/${videoId}`);
 }
 
 export default {
