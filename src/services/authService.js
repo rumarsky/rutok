@@ -41,19 +41,32 @@ async function login(email, password) {
   return data;
 }
 
+let refreshPromise = null;
+
 async function refreshToken() {
-  const refreshToken = getCookie('refreshToken');
-  if (!refreshToken) throw new Error('Нет refreshToken');
-  const response = await fetch(`${API_URL}/refresh`, {
-    method: "POST",
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({token: refreshToken})
-  });
-  if (!response.ok) throw new Error('Ошибка обновления токена');
-  const data = await response.json();
-  setCookie('accessToken', data.accessToken);
-  setCookie('refreshToken', data.refreshToken);
-  return data;
+  if (!refreshPromise) {
+    refreshPromise = (async () => {
+      const refreshToken = getCookie('refreshToken');
+      if (!refreshToken) throw new Error('Нет refreshToken');
+      const response = await fetch(`${API_URL}/refresh`, {
+        method: "POST",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({token: refreshToken})
+      });
+      if (!response.ok) throw new Error('Ошибка обновления токена');
+      const data = await response.json();
+      setCookie('accessToken', data.accessToken);
+      setCookie('refreshToken', data.refreshToken);
+      return data;
+    })();
+    try {
+      await refreshPromise;
+    } finally {
+      refreshPromise = null;
+    }
+  } else {
+    await refreshPromise;
+  }
 }
 
 async function logout() {
