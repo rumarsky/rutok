@@ -60,8 +60,7 @@ async function uploadVideo(name, description, idVideo, tags) {
         })
     };
 
-    const response = await authFetch(`${API_URL}/videos`, opt)
-    return response.json();
+    return await authFetch(`${API_URL}/videos`, opt);
 }
 
 export default{
