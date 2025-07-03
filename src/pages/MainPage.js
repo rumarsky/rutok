@@ -57,7 +57,7 @@ async function generateVideos(apiVideos, userService) {
     return {
       id:video.id,
       user: {
-        avatar: 'https://i.pravatar.cc/40?img=5',
+        avatar: 'https://i.pinimg.com/736x/fb/ee/5a/fbee5a490521126a19dcc0e8d5d56485.jpg',
         username
       },
       title: video.name || 'Untitled Video',
