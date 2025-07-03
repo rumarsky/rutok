@@ -1,5 +1,7 @@
 import React, { useRef, useState } from 'react';
 import './UploadModal.css';
+import handleVideoService from "../services/handleVideoService";
+import videoService from "../services/videoService";
 
 function UploadModal({ visible, onClose }) {
   const [videoFile, setVideoFile] = useState(null);
@@ -21,10 +23,23 @@ function UploadModal({ visible, onClose }) {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Здесь можно реализовать отправку данных на сервер
-    //alert('Видео загружено!');
+    const videoHandlerResponse = await handleVideoService.handleVideo(videoFile)
+    if (videoHandlerResponse.videoId === undefined) {
+      alert("Ошибка обработки и сохранения видео в хранилище.")
+      return
+    }
+    const idVideo = videoHandlerResponse.videoId
+    // const idVideo = 5
+    const tags_arr = tags.split(' ')
+    const videoServiceResponse = await videoService.uploadVideo(title, description, idVideo, tags_arr)
+    if (typeof videoServiceResponse === 'number') {
+      alert('Видео загружено!');
+    } else {
+      alert('Ошибка сохранения информации о видео.');
+    }
     onClose();
   };
 
