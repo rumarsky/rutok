@@ -195,6 +195,7 @@ function VideoFeed({ videos = [], initialIndex = 0, onClose }) {
         onClose={() => setShowComments(false)}
         comments={video.commentsList}
         onAddComment={handleAddComment}
+        videoId={video.id}
       />
     </div>
   );

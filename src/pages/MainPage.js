@@ -8,14 +8,14 @@ import userService from '../services/userService';
 import './MainPage.css';
 
 const  romanAllVideos = await videoService.getAllUserVideos();
-console.log(romanAllVideos);
+console.log(romanAllVideos, "roman videos");
 
 async function generateVideos(apiVideos, userService) {
   return await Promise.all(apiVideos.map(async video => {
     //username
     let username = 'Unknown User';
     try {
-      const user = await userService.getUserById(video.userId);
+      const user = await userService.getUserById(video.userId); 
       if (user && typeof user.username === 'string') {
         username = user.username;
       } else {
@@ -30,7 +30,32 @@ async function generateVideos(apiVideos, userService) {
     ? video.tags.map(tag => `#${tag.ruTag}`).join(' ')
     : '';
 
+    //comments
+    let comList = [];
+    console.log(video.id, "curr id video");
+    try{
+      const comFromApi = await videoService.getVideoComments(video.id);
+      console.log(comFromApi, "all comments");
+
+      comList = await Promise.all(comFromApi.map(async comment => {
+        let username = 'Unknown User';
+        const user = await userService.getUserById(comment.userId);
+        username = user.username;  
+        return {
+          author: username,
+          text: comment.text
+        };
+      }));
+    } catch (error){
+      if (error.response?.status !== 404) { //игнор 404 ошибки
+        console.error(`Error fetching comments for video ${video.id}:`, error);
+      }
+    }
+
+    console.log(comList, "comment list for video");
+
     return {
+      id:video.id,
       user: {
         avatar: 'https://i.pravatar.cc/40?img=5',
         username
@@ -41,10 +66,7 @@ async function generateVideos(apiVideos, userService) {
       likes: video.likes || 0,
       comments: video.commentsCount || 0,
       idVideo: video.idVideo || 0,
-      commentsList: [
-        { author: 'cat_lover', text: 'Какой милый!' },
-        { author: 'user123', text: 'Хочу такого же кота!' }
-      ]
+      commentsList: comList 
     };
   }));
 }

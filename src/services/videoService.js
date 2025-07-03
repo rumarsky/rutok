@@ -67,9 +67,30 @@ async function getVideoByID(videoId) {
     return await authFetch(`${API_URL}/videos/${videoId}`);
 }
 
+async function addComment(comment, idVideo){
+    const opt = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            text: comment,
+            videoId: idVideo,
+        })
+    };
+
+    return await authFetch(`${API_URL}/comments`, opt);
+}
+
+async function getVideoComments(videoId) {
+    return await publicFetch(`${API_URL}/comments/videos/${videoId}`);
+}
+
 export default{
     getUserVideosID,
     getAllUserVideos,
     uploadVideo,
-    getVideoByID
+    getVideoByID,
+    addComment,
+    getVideoComments
 }
