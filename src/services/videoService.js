@@ -86,11 +86,42 @@ async function getVideoComments(videoId) {
     return await publicFetch(`${API_URL}/comments/videos/${videoId}`);
 }
 
+async function addLike(idVid) {
+    const opt = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: idVid,
+      })
+    };
+  
+    try {
+      const response = await authFetch(`${API_URL}/videos/${idVid}/like`, opt);
+      
+      //обработка пустого ответа
+      if (response.status === 204 || response.headers.get('Content-Length') === '0') {
+        return { success: true };
+      }
+      
+      //с json работа если не пустое тело ответа
+      const text = await response.text();
+      return text ? JSON.parse(text) : { success: true };
+      
+    } catch (error) {
+      console.error('Like error:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+
 export default{
     getUserVideosID,
     getAllUserVideos,
     uploadVideo,
     getVideoByID,
     addComment,
-    getVideoComments
+    getVideoComments,
+    addLike
 }
