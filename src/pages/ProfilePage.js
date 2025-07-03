@@ -13,6 +13,45 @@ import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 
 
+async function generateVideos(apiVideos, userService) {
+  return await Promise.all(apiVideos.map(async video => {
+    //username
+    let username = 'Unknown User';
+    try {
+      const user = await userService.getUserById(video.userId);
+      if (user && typeof user.username === 'string') {
+        username = user.username;
+      } else {
+        console.warn(`No valid username for userId: ${video.userId}`);
+      }
+    } catch (error) {
+      console.error(`Error fetching user for userId ${video.userId}:`, error);
+    }
+
+     //tags
+    const tagsString = Array.isArray(video.tags)
+    ? video.tags.map(tag => `#${tag.ruTag}`).join(' ')
+    : '';
+
+    return {
+      user: {
+        avatar: 'https://i.pravatar.cc/40?img=5',
+        username
+      },
+      title: video.name || 'Untitled Video',
+      description: video.description || '',
+      tags: tagsString,
+      likes: video.likes || 0,
+      comments: video.commentsCount || 0,
+      idVideo: video.idVideo || 0,
+      commentsList: [
+        { author: 'cat_lover', text: 'Какой милый!' },
+        { author: 'user123', text: 'Хочу такого же кота!' }
+      ]
+    };
+  }));
+}
+
 function ProfilePage() {
   const [showUpload, setShowUpload] = useState(false);
   const [openFeed, setOpenFeed] = useState(false);
@@ -42,88 +81,25 @@ function ProfilePage() {
         const userData = await userService.getUserById(userId);
         setUser(userData);
         
-        const romanVideo = await videoService.getUserVideosID(1);
-        console.log(romanVideo);
-        //id видосов подгружаем в массив
-        //const videoIds = await videoService.getUserVideosID(userId);                  ROMAAAAAAAN
-        //console.log('Видео пользователя :', videoIds);
-        //setUserVideos(videoIds);
+        const romanVideo = await videoService.getUserVideosID(userId);
+        console.log(romanVideo, "ids videos");
+
+        const uservideos = [];
+        for (const id in romanVideo){
+          const videoInf = await videoService.getVideoByID(romanVideo[id]);
+          uservideos.push(videoInf);
+        }
+
+        const currVideos = await generateVideos(uservideos,userService);
+        console.log(currVideos ,"All videos");
+        
+        setUserVideos(currVideos);
       } catch (e) {
         setError("Ошибка загрузки профиля");
       }
     };
     fetchUser();
   }, []);
-
-
-  const userVideos = [
-    //Вот этот массив по ID пользователя нужно заполнять с помощью запроса к сервису Ромы
-    //Тогда все будет соответствовать, пока поставил затычку
-    {
-      user: { avatar: user?.avatar || "", username: user?.username || "" },
-      title: "Мой первый ролик",
-      description: "Это мой первый ролик на RuTok!",
-      tags: "#привет #rutok",
-      likes: 10,
-      comments: 2,
-      idVideo: 1,
-    },
-    {
-
-      user: { avatar: user?.avatar || '', username: user?.username || '' },
-      title: 'Мой первый ролик',
-      description: 'Это мой первый ролик на RuTok!',
-      tags: '#привет #rutok',
-
-      likes: 10,
-      comments: 2,
-      idVideo: 14,
-    },
-    {
-
-      user: { avatar: user?.avatar || '', username: user?.username || '' },
-      title: 'Мой первый ролик',
-      description: 'Это мой первый ролик на RuTok!',
-      tags: '#привет #rutok',
-
-      likes: 10,
-      comments: 2,
-      idVideo: 1,
-    },
-    {
-
-      user: { avatar: user?.avatar || '', username: user?.username || '' },
-      title: 'Мой первый ролик',
-      description: 'Это мой первый ролик на RuTok!',
-      tags: '#привет #rutok',
-
-      likes: 10,
-      comments: 2,
-      idVideo: 2,
-    },
-    {
-
-      user: { avatar: user?.avatar || "", username: user?.username || "" },
-      title: "Мой первый ролик",
-      description: "Это мой первый ролик на RuTok!",
-      tags: "#привет #rutok",
-
-      likes: 10,
-      comments: 2,
-      idVideo: 4,
-    },
-    {
-
-      user: { avatar: user?.avatar || "", username: user?.username || "" },
-      title: "Мой первый ролик",
-      description: "Это мой первый ролик на RuTok!",
-      tags: "#привет #rutok",
-
-      likes: 10,
-      comments: 2,
-      idVideo: 2,
-    },
-  ];
 
   const handleFrameClick = (idx) => {
     setCurrentIndex(idx);
@@ -195,7 +171,7 @@ function ProfilePage() {
         </button>
         <h2 className="profile-videos-title">Мои ролики</h2>
         <div className="profile-videos-list">
-          {userVideos.map((video, idx) => (
+          {userVid.map((video, idx) => (
             <VideoFrame
               key={idx}
               title={video.title}
@@ -225,7 +201,7 @@ function ProfilePage() {
             onClick={(e) => e.stopPropagation()}
           >
             <VideoFeed
-              videos={userVideos}
+              videos={userVid}
               initialIndex={currentIndex}
               onClose={() => setOpenFeed(false)}
             />
