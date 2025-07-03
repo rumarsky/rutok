@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import './UploadModal.css';
 import handleVideoService from "../services/handleVideoService";
 import videoService from "../services/videoService";
+import bongo_cat from '../assets/bongo_cat.gif'
 
 function UploadModal({ visible, onClose }) {
   const [videoFile, setVideoFile] = useState(null);
@@ -10,6 +11,7 @@ function UploadModal({ visible, onClose }) {
   const [tags, setTags] = useState('');
   const [description, setDescription] = useState('');
   const fileInputRef = useRef();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!visible) return null;
 
@@ -25,6 +27,7 @@ function UploadModal({ visible, onClose }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     // Здесь можно реализовать отправку данных на сервер
     const videoHandlerResponse = await handleVideoService.handleVideo(videoFile)
     if (videoHandlerResponse.videoId === undefined) {
@@ -40,6 +43,7 @@ function UploadModal({ visible, onClose }) {
     } else {
       alert('Ошибка сохранения информации о видео.');
     }
+    setIsSubmitting(false);
     onClose();
   };
 
@@ -90,8 +94,26 @@ function UploadModal({ visible, onClose }) {
               placeholder="#тег1 #тег2"
             />
           </label>
-          <button className="upload-modal-submit" type="submit">Загрузить</button>
+          <button className="upload-modal-submit" type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Загрузка...' : 'Загрузить'}
+          </button>
         </form>
+
+        {/* Затемнение и индикатор загрузки */}
+        {isSubmitting && (
+            <div className="upload-modal-overlay">
+              <div className="upload-modal-loading">
+                <img src={bongo_cat}
+                     alt="Загрузка"
+                     style={{
+                       width: '100%', // Фиксированная ширина
+                       height: '100%', // Фиксированная высота
+                       objectFit: 'contain' // Сохраняет пропорции
+                     }}/>
+                <p>Идёт загрузка, пожалуйста подождите...</p>
+              </div>
+            </div>
+        )}
       </div>
     </div>
   );
