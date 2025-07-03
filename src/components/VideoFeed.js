@@ -3,6 +3,7 @@ import { MdFavorite, MdComment} from 'react-icons/md';
 import CommentPanel from './CommentPanel';
 import './VideoFeed.css';
 import storageService from '../services/storageService';
+import videoService from '../services/videoService';
 
 function VideoFeed({ videos = [], initialIndex = 0, onClose }) {
   const [current, setCurrent] = useState(initialIndex);
@@ -129,7 +130,18 @@ function VideoFeed({ videos = [], initialIndex = 0, onClose }) {
     );
   }
 
-  const handleLike = () => setLiked((prev) => !prev);
+  const handleLike = async () => {
+    try {
+      //запрос на добавление лайка
+      await videoService.addLike(video.id);
+      
+      //обновление ui
+      setLiked(prev => !prev);
+    } catch (error) {
+      console.error('Ошибка при отправке лайка:', error);
+    }
+  };
+
   const handleCommentClick = () => setShowComments((prev) => !prev);
 
   return (
