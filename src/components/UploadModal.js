@@ -28,7 +28,6 @@ function UploadModal({ visible, onClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    await new Promise(r => setTimeout(r, 10000));
     // Здесь можно реализовать отправку данных на сервер
     const videoHandlerResponse = await handleVideoService.handleVideo(videoFile)
     if (videoHandlerResponse.videoId === undefined) {
