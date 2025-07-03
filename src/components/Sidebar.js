@@ -23,14 +23,14 @@ function Sidebar() {
           <MdHome className="sidebar-icon" />
           <span className="sidebar-link-text">Главная</span>
         </NavLink>
-        <NavLink
+        {/*<NavLink
           to="/recommendations"
           className={({ isActive }) => 'sidebar-link' + (isActive ? ' active' : '')}
           title="Рекомендации"
         >
           <MdExplore className="sidebar-icon" />
           <span className="sidebar-link-text">Рекомендации</span>
-        </NavLink>
+        </NavLink>*/}
         {isAuth ? (
           <NavLink
             to="/profile"
