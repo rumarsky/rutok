@@ -108,13 +108,13 @@ function SettingsPage() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </label>
-          <label>
+          {/* <label>
             Тема:
             <select value={theme} onChange={(e) => setTheme(e.target.value)}>
               <option value="dark">Тёмная</option>
               <option value="light">Светлая</option>
             </select>
-          </label>
+          </label> */}
           <button className="settings-save-btn" type="submit">
             Сохранить
           </button>
