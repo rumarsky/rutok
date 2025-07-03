@@ -18,7 +18,7 @@ async function generateVideos(apiVideos, userService) {
     //username
     let username = 'Unknown User';
     try {
-      const user = await userService.getUserById(video.userId);
+      const user = await userService.getUserById(video.userId); 
       if (user && typeof user.username === 'string') {
         username = user.username;
       } else {
@@ -33,7 +33,32 @@ async function generateVideos(apiVideos, userService) {
     ? video.tags.map(tag => `#${tag.ruTag}`).join(' ')
     : '';
 
+    //comments
+    let comList = [];
+    console.log(video.id, "curr id video");
+    try{
+      const comFromApi = await videoService.getVideoComments(video.id);
+      console.log(comFromApi, "all comments");
+
+      comList = await Promise.all(comFromApi.map(async comment => {
+        let username = 'Unknown User';
+        const user = await userService.getUserById(comment.userId);
+        username = user.username;  
+        return {
+          author: username,
+          text: comment.text
+        };
+      }));
+    } catch (error){
+      if (error.response?.status !== 404) { //игнор 404 ошибки
+        console.error(`Error fetching comments for video ${video.id}:`, error);
+      }
+    }
+
+    console.log(comList, "comment list for video");
+
     return {
+      id:video.id,
       user: {
         avatar: 'https://i.pravatar.cc/40?img=5',
         username
@@ -44,10 +69,7 @@ async function generateVideos(apiVideos, userService) {
       likes: video.likes || 0,
       comments: video.commentsCount || 0,
       idVideo: video.idVideo || 0,
-      commentsList: [
-        { author: 'cat_lover', text: 'Какой милый!' },
-        { author: 'user123', text: 'Хочу такого же кота!' }
-      ]
+      commentsList: comList 
     };
   }));
 }
@@ -60,6 +82,9 @@ function ProfilePage() {
 
   const [error, setError] = useState('');
   const [userVid, setUserVideos] = useState([]);
+
+  const [videosCount, setVideosCount] = useState(0);
+  const [totalLikes, setTotalLikes] = useState(0);
 
   const navigate = useNavigate();
 
@@ -94,6 +119,8 @@ function ProfilePage() {
         console.log(currVideos ,"All videos");
         
         setUserVideos(currVideos);
+        setVideosCount(currVideos.length);
+        setTotalLikes(currVideos.reduce((sum, video) => sum + (video.likes || 0), 0));
       } catch (e) {
         setError("Ошибка загрузки профиля");
       }
@@ -146,7 +173,7 @@ function ProfilePage() {
             <div className="profile-stats">
               {/* Здесь можно добавить реальные данные, если они есть в user */}
               <div>
-                <b>0</b> роликов
+                <b>{videosCount}</b> роликов
               </div>
               {/* <div>
                 <b>0</b> подписчиков
@@ -155,7 +182,7 @@ function ProfilePage() {
                 <b>0</b> подписки
               </div> */}
               <div>
-                <b>0</b> лайков
+                <b>{totalLikes}</b> лайков
               </div>
             </div>
             <button className="profile-logout-btn" onClick={handleLogout}>
@@ -204,6 +231,7 @@ function ProfilePage() {
               videos={userVid}
               initialIndex={currentIndex}
               onClose={() => setOpenFeed(false)}
+              
             />
           </div>
         </div>
