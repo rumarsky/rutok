@@ -148,12 +148,12 @@ function ProfilePage() {
               <div>
                 <b>0</b> роликов
               </div>
-              <div>
+              {/* <div>
                 <b>0</b> подписчиков
               </div>
               <div>
                 <b>0</b> подписки
-              </div>
+              </div> */}
               <div>
                 <b>0</b> лайков
               </div>
