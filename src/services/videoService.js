@@ -63,8 +63,13 @@ async function uploadVideo(name, description, idVideo, tags) {
     return await authFetch(`${API_URL}/videos`, opt);
 }
 
+async function getVideoByID(videoId) {
+    return await authFetch(`${API_URL}/videos/${videoId}`);
+}
+
 export default{
     getUserVideosID,
     getAllUserVideos,
-    uploadVideo
+    uploadVideo,
+    getVideoByID
 }
